@@ -6,45 +6,49 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import traceback
 from page_object.login_page import LoginPage
+from util.parse_page_object_repository import *
+from project_var.var import *
+from util.object_map import *
+from action.login import *
 
 
 class Account(object):
     def __init__(self, driver):
         self.driver = driver
+        self.parse_config_file = ParsePageObjectRepositoryConfig(page_object_repository_path)
+        self.account_page_items = self.parse_config_file.get_item_section('salesforce_account')
 
-    def new_account(self):
-        try:
-            wait = WebDriverWait(self.driver, 10, 0.2)  # 显示等待
-            self.driver.get('https://ap8.lightning.force.com/001/o')
-            time.sleep(10)
-            new_btn = wait.until(lambda x: x.find_element_by_xpath('//*[@id="brandBand_1"]//a[@title="New"]'))
-            new_btn.click()
-            time.sleep(10)
-            timestamp = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
-            acc_name_text = 'jessicatest' + timestamp
-            acc_name = wait.until((lambda x: x.find_element_by_xpath(
-                '//h2[contains(text(),"New Account")]/..//span[text()="Account Name"]/../following-sibling::input[1]')))
-            acc_name.send_keys(acc_name_text)
-            acc_num = wait.until(lambda x: x.find_element_by_xpath(
-                '//h2[contains(text(),"New Account")]/..//span[text()="Account Number"]/../following-sibling::input[1]'))
-            acc_num.send_keys(timestamp)
-            rating_ddl = wait.until(lambda x: x.find_element_by_xpath(
-                '//h2[contains(text(),"New Account")]/..//span[text()="Rating"]/../following-sibling::div[1]//a'))
-            rating_ddl.click()  # 先选中drop down list, 点击，使得下拉列表中的选项visible, 然后点击选项将其选择。
-            rating_item = wait.until(lambda x: x.find_element_by_xpath('//a[text()="Hot"]'))
-            rating_item.click()
-            save_btn = wait.until(lambda x: x.find_element_by_xpath('//*[@class="inlineFooter"]//button[3]'))
-            save_btn.click()
-            message = wait.until(lambda x: x.find_element_by_xpath(
-                '//div[contains(@class,"slds-theme--success")]/div/div/span[contains(@class,"toastMessage")]'))
-            # print(message.text)
-            assert message.text == f'Account "{acc_name_text}" was created.', 'Actual message is: ' + message.text
-        except TimeoutException as e:
-            print(traceback.print_exc())
-        except NoSuchElementException as e:
-            print(traceback.print_exc())
-        except Exception as e:
-            print(traceback.print_exc())
+    def get_account_link(self):
+        self.driver.get('https://ap8.lightning.force.com/001/o')
+        time.sleep(10)
+
+    def get_new_button(self):
+        locate_type, locate_expression = self.account_page_items['account_listview_page.new_button'].split('>')
+        return get_element(self.driver, locate_type, locate_expression)
+
+    def get_account_name(self):
+        locate_type, locate_expression = self.account_page_items['new_account_page.account_name'].split('>')
+        return get_element(self.driver, locate_type, locate_expression)
+
+    def get_account_number(self):
+        locate_type, locate_expression = self.account_page_items['new_account_page.account_number'].split('>')
+        return get_element(self.driver, locate_type, locate_expression)
+
+    def get_rating_ddl(self):
+        locate_type, locate_expression = self.account_page_items['new_account_page.rating_ddl'].split('>')
+        return get_element(self.driver, locate_type, locate_expression)
+
+    def get_rating_option(self):
+        locate_type, locate_expression = self.account_page_items['new_account_page.rating_option'].split('>')
+        return get_element(self.driver, locate_type, locate_expression)
+
+    def get_save_button(self):
+        locate_type, locate_expression = self.account_page_items['new_account_page.save_button'].split('>')
+        return get_element(self.driver, locate_type, locate_expression)
+
+    def get_message(self):
+        locate_type, locate_expression = self.account_page_items['new_account_page.message'].split('>')
+        return get_element(self.driver, locate_type, locate_expression)
 
 
 if __name__ == '__main__':
@@ -54,7 +58,17 @@ if __name__ == '__main__':
                               executable_path='C:\\PycharmProjects\\data_driven_test\\chromedriver.exe')
     driver.get('https://ap8.salesforce.com/')
     driver.maximize_window()
-    lp = LoginPage(driver)
-    lp.login()
+    login(driver, 'jessica.test@dev.com', 'passwordtest')
+    time.sleep(20)
     acc = Account(driver)
-    acc.new_account()
+    acc.get_account_link()
+    acc.get_new_button().click()
+    timestamp = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+    acc_name_text = 'jessicatest' + timestamp
+    acc.get_account_name().send_keys(acc_name_text)
+    acc.get_account_number().send_keys(timestamp)
+    acc.get_rating_ddl().click()
+    acc.get_rating_option().click()
+    acc.get_save_button().click()
+    message = acc.get_message()
+    assert message.text == f'Account "{acc_name_text}" was created.', 'Actual message is: ' + message.text
