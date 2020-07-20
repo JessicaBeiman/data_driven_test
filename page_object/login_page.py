@@ -9,6 +9,7 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import traceback
 from util.parse_page_object_repository import *
 from project_var.var import *
+from util.object_map import *
 
 
 class LoginPage(object):
@@ -20,18 +21,23 @@ class LoginPage(object):
 
     def get_username(self):
         locate_type, locate_expression = self.login_page_items['login_page.username'].split('>')
-        username = self.wait.until(lambda x: x.find_element(by=locate_type, value=locate_expression))
+        username = get_element(self.driver, locate_type, locate_expression)
         return username
 
     def get_password(self):
         locate_type, locate_expression = self.login_page_items['login_page.password'].split('>')
-        password = self.wait.until(lambda x: x.find_element(by=locate_type, value=locate_expression))
+        password = get_element(self.driver, locate_type, locate_expression)
         return password
 
     def get_login_button(self):
         locate_type, locate_expression = self.login_page_items['login_page.login_button'].split('>')
-        submit = self.wait.until(lambda x: x.find_element(by=locate_type, value=locate_expression))
+        submit = get_element(self.driver, locate_type, locate_expression)
         return submit
+
+    def login(self):
+        self.get_username().send_keys('jessica.test@dev.com')
+        self.get_password().send_keys('passwordtest')
+        self.get_login_button().click()
 
 
 if __name__ == '__main__':
@@ -42,9 +48,7 @@ if __name__ == '__main__':
     driver.get('https://ap8.salesforce.com/')
     driver.maximize_window()
     lp = LoginPage(driver)
-    lp.get_username().send_keys('jessica.test@dev.com')
-    lp.get_password().send_keys('passwordtest')
-    lp.get_login_button().click()
-    driver.switch_to.default_content()
-    time.sleep(20)
-    assert 'Home' in driver.page_source, '"Home" not exist in page_source.'
+    lp.login()
+    # driver.switch_to.default_content()
+    # time.sleep(20)
+    # assert 'Home' in driver.page_source, '"Home" not exist in page_source.'

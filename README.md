@@ -13,3 +13,4 @@ What this project does is to login Salesforce and create an account.
 将每一个元素的查找单独封装成一个方法。在登录过程中的每一步调用每个元素的查找方法并传递参数。  
 步骤5：封装读取配置文件中数据的方法  
 步骤6：用变量存储配置文件的路径  
+步骤7：封装查找元素的功能和login功能的进一步封装
