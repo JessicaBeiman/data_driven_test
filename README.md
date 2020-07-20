@@ -11,4 +11,5 @@ What this project does is to login Salesforce and create an account.
 新创建一个Account类，在这个类下面创建一个new_account函数实现新建account功能。将test主程序里面新建account这一部分的代码移到Account类下的new_account函数里面。在test主程序里面调用Account类的new_account方法。  
 步骤4：封装查找元素的功能。  
 将每一个元素的查找单独封装成一个方法。在登录过程中的每一步调用每个元素的查找方法并传递参数。  
-步骤5：封装读取配置文件中数据的方法
+步骤5：封装读取配置文件中数据的方法  
+步骤6：用变量存储配置文件的路径  

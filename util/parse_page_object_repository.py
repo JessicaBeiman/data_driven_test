@@ -2,6 +2,7 @@
 # author = jessica
 
 from configparser import ConfigParser
+from project_var.var import page_object_repository_path
 
 
 class ParsePageObjectRepositoryConfig(object):
@@ -20,6 +21,6 @@ class ParsePageObjectRepositoryConfig(object):
 
 
 if __name__ == '__main__':
-    pp = ParsePageObjectRepositoryConfig('C:\\PycharmProjects\\data_driven_test\\config\\page_object_repository.ini')
+    pp = ParsePageObjectRepositoryConfig(page_object_repository_path)
     print(pp.get_item_section('salesforce_login'))
     print(pp.get_option_value('salesforce_login', 'login_page.username'))
