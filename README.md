@@ -15,4 +15,5 @@ What this project does is to login Salesforce and create an account.
 步骤6：用变量存储配置文件的路径  
 步骤7：封装查找元素的功能和login功能的进一步封装  
 步骤8：单独封装login方法  
-步骤9：封装添加联系人操作
+步骤9：封装创建Account操作  
+步骤10：单独封装创建Account的功能

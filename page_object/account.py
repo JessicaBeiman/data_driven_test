@@ -38,8 +38,10 @@ class Account(object):
         locate_type, locate_expression = self.account_page_items['new_account_page.rating_ddl'].split('>')
         return get_element(self.driver, locate_type, locate_expression)
 
-    def get_rating_option(self):
+    def get_rating_option(self, rating_option='--None--'):
         locate_type, locate_expression = self.account_page_items['new_account_page.rating_option'].split('>')
+        if 'placeholder' in locate_expression:
+            locate_expression = locate_expression.replace('placeholder', rating_option)
         return get_element(self.driver, locate_type, locate_expression)
 
     def get_save_button(self):

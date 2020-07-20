@@ -9,6 +9,8 @@ import traceback
 
 from page_object.login_page import LoginPage
 from page_object.account import Account
+from action.login import *
+from action.new_account import *
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_experimental_option('useAutomationExtension', False)
@@ -16,11 +18,11 @@ driver = webdriver.Chrome(options=chrome_options, desired_capabilities=chrome_op
                           executable_path='C:\\PycharmProjects\\data_driven_test\\chromedriver.exe')
 driver.get('https://ap8.salesforce.com/')
 driver.maximize_window()
-lp = LoginPage(driver)
-acc = Account(driver)
+
 try:
-    lp.login()
-    acc.new_account()
+    login(driver, 'jessica.test@dev.com', 'passwordtest')
+    new_account(driver, 'jessicatest20200720', '20200720', 'Warm')
+
 except TimeoutException as e:
     print(traceback.print_exc())
 except NoSuchElementException as e:
