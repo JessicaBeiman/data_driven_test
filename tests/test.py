@@ -7,29 +7,24 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import traceback
 
+from page_object.login_page import LoginPage
+
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_experimental_option('useAutomationExtension', False)
 driver = webdriver.Chrome(options=chrome_options, desired_capabilities=chrome_options.to_capabilities(),
                           executable_path='C:\\PycharmProjects\\data_driven_test\\chromedriver.exe')
 driver.get('https://ap8.salesforce.com/')
 driver.maximize_window()
+lp = LoginPage(driver)
+wait = WebDriverWait(driver, 10, 0.2)  # 显示等待
 try:
-    wait = WebDriverWait(driver, 10, 0.2)  # 显示等待
-    username = wait.until(lambda x: x.find_element_by_xpath('//*[@id="username"]'))
-    username.send_keys('jessica.test@dev.com')
-    password = wait.until(lambda x: x.find_element_by_xpath('//*[@id="password"]'))
-    password.send_keys('password')
-    submit = wait.until(lambda x: x.find_element_by_xpath('//*[@id="Login"]'))
-    submit.click()
-    driver.switch_to.default_content()
-    time.sleep(5)
-    # assert 'Sales' in driver.page_source, 'not exist in page_source'
+    lp.login()
 
     driver.get('https://ap8.lightning.force.com/001/o')
     time.sleep(10)
     new_btn = wait.until(lambda x: x.find_element_by_xpath('//*[@id="brandBand_1"]//a[@title="New"]'))
     new_btn.click()
-
+    time.sleep(10)
     timestamp = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
     acc_name_text = 'jessicatest' + timestamp
     acc_name = wait.until((lambda x: x.find_element_by_xpath('//h2[contains(text(),"New Account")]/..//span[text()="Account Name"]/../following-sibling::input[1]')))
