@@ -10,7 +10,7 @@ class ParseExcel(object):
 
     def __init__(self, excel_path):
         self.excel_path = excel_path
-        self.workbook = load_workbook(self.excel_path)  # 加载excel
+        self.workbook = load_workbook(self.excel_path, data_only=True)  # 加载excel, 当excel中包含公式时，设置data_only=True将读公式的结果而不是读公式
         self.sheet = self.workbook.active  # 获取第一个sheet
         self.font = Font(color=None)
         self.color_dict = {'red': 'FFFF3030', 'green': 'FF008B00'}
@@ -76,6 +76,9 @@ class ParseExcel(object):
     # 调用此方法时，excel不要处于打开状态
     def write_cell_content(self, row_no, col_no, content, font=None):
         self.sheet.cell(row=row_no, column=col_no).value = content
+        if font:
+            self.font = Font(color=self.color_dict[font])
+            self.sheet.cell(row=row_no, column=col_no).font = self.font
         self.workbook.save(self.excel_path)
         return self.sheet.cell(row=row_no, column=col_no).value
 

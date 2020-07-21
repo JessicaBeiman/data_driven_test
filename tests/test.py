@@ -42,13 +42,14 @@ for id, row in enumerate(rows):
                         message = new_account(driver, account_name, account_number, account_rating_option)
                         pe.write_cell_current_time(acc_id + 2, 7)  # 执行时间
                         if message == acc_row[4].value:
-                            pe.write_cell_content(acc_id + 2, 8, 'Pass')  # 测试结果
+                            pe.write_cell_content(acc_id + 2, 8, 'Pass', font='green')  # 测试结果
                         else:
-                            pe.write_cell_content(acc_id + 2, 8, 'Fail')  # 测试结果
+                            pe.write_cell_content(acc_id + 2, 8, 'Fail', font='red')  # 测试结果
                             pe.write_cell_content(acc_id + 2, 9, message)  # 实际结果
                     except Exception as e:
+                        pe.write_cell_content(acc_id + 2, 8, 'Fail', font='red')  # 测试结果
                         pe.write_cell_content(acc_id + 2, 9, str(e))
         except Exception as e:
             pe.set_sheet_by_name('login')
-            pe.write_cell_content(id + 2, 6, 'Fail')  # 测试结果
+            pe.write_cell_content(id + 2, 6, 'Fail', font='red')  # 测试结果
             pe.write_cell_content(id + 2, 7, str(e))  # 实际结果
