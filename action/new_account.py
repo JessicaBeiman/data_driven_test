@@ -14,8 +14,9 @@ def new_account(driver, account_name, account_number='0', rating_option='--None-
     acc.get_rating_ddl().click()
     acc.get_rating_option(rating_option).click()
     acc.get_save_button().click()
-    message = acc.get_message()
-    assert message.text == f'Account "{account_name}" was created.', 'Actual message is: ' + message.text
+    message = acc.get_message().text
+    return message
+    # assert message.text == f'Account "{account_name}" was created.', 'Actual message is: ' + message.text
 
 
 if __name__ == '__main__':
