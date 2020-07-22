@@ -94,27 +94,67 @@ class ParseExcel(object):
     def save_excel_file(self):
         self.workbook.save(self.excel_path)
 
+    # 获取有效的行数
+    def get_valid_rows(self):
+        first_col = list(self.sheet.iter_cols())[0]  # 获取第一列
+        for index, cell in enumerate(first_col):
+            if index == len(first_col) - 1:
+                return index
+            elif cell.value is None:
+                return index - 1
+
+    # 获取有效的列数
+    def get_valid_cols(self):
+        first_row = list(self.sheet.iter_rows())[0]  # 获取第一行
+        for index, cell in enumerate(first_row):
+            if index == len(first_row) - 1:
+                return index + 1
+            elif cell.value is None:
+                return index
+
+    # 获取有效的行列范围内的数据，储存为字典列表，其中每一行的数据为一个字典
+    def get_valid_data(self):
+        row_count = self.get_valid_rows()
+        col_count = self.get_valid_cols()
+        if row_count and col_count:
+            rows = self.get_all_rows()[1:row_count+1]
+            col_names = self.get_single_row(0)[:col_count]
+            data_list = []
+            for row in rows:
+                row_dict = {}
+                for i in range(0, col_count):
+                    row_dict[col_names[i].value] = row[i].value
+                data_list.append(row_dict)
+            return data_list
+
 
 if __name__ == '__main__':
     # 测试代码
     p = ParseExcel(test_data_excel_path)
-    print(u'获取当前默认sheet的名字: ', p.get_default_sheet())
-    print(u'设置当前要操作的sheet对象，使用index=1来获取相应的sheet: ', p.set_sheet_by_index(1))
-    print(u'获取当前默认sheet的名字: ', p.get_default_sheet())
-    print(u'设置当前要操作的sheet对象，使用index=0来获取相应的sheet: ', p.set_sheet_by_index(0))
-    print(u'获取当前默认sheet的名字: ', p.get_default_sheet())
-    print(u'设置当前要操作的sheet对象，使用sheet名称来获取相应的sheet: ', p.set_sheet_by_name('account'))
-    print(u'获取当前默认sheet的名字: ', p.get_default_sheet())
-    print(u'获取默认sheet中最大的行数: ', p.get_max_row_no())
-    print(u'获取默认sheet中最大的列数: ', p.get_max_col_no())
-    print(u'获取默认sheet的最小（起始）行号: ', p.get_min_row_no())
-    print(u'获取默认sheet的最小（起始）列号: ', p.get_min_col_no())
-    print(u'获取默认sheet的所有行对象: ', p.get_all_rows())
-    print(u'获取默认sheet的所有列对象: ', p.get_all_cols())
-    print(u'从默认sheet中获取某一行，第一行从0开始: ', p.get_single_row(2))
-    print(u'从默认sheet中获取某一列，第一列从0开始: ', p.get_single_col(3))
-    print(u'从默认sheet中，通过行号和列号获取指定的单元格(2,2)，注意行号和列号从1开始: ', p.get_cell(2, 2))
-    print(u'从默认sheet中，通过行号和列号获取指定的单元格(3,3)中的内容，注意行号和列号从1开始: ', p.get_cell_content(3, 3))
-    print(u'从默认sheet中，通过行号和列号向指定的单元格中(3,8)写入指定的内容，注意行号和列号从1开始: ', p.write_cell_content(3, 8, u'成功'))
-    print(u'从默认sheet中，通过行号和列号向指定的单元格中(2,7)写入当前日期，注意行号和列号从1开始: ', p.write_cell_current_time(2, 7))
-    print(u'保存excel文件: ', p.save_excel_file())
+    # print(u'获取当前默认sheet的名字: ', p.get_default_sheet())
+    # print(u'设置当前要操作的sheet对象，使用index=1来获取相应的sheet: ', p.set_sheet_by_index(1))
+    # print(u'获取当前默认sheet的名字: ', p.get_default_sheet())
+    # print(u'设置当前要操作的sheet对象，使用index=0来获取相应的sheet: ', p.set_sheet_by_index(0))
+    # print(u'获取当前默认sheet的名字: ', p.get_default_sheet())
+    # print(u'设置当前要操作的sheet对象，使用sheet名称来获取相应的sheet: ', p.set_sheet_by_name('account'))
+    # print(u'获取当前默认sheet的名字: ', p.get_default_sheet())
+    # print(u'获取默认sheet中最大的行数: ', p.get_max_row_no())
+    # print(u'获取默认sheet中最大的列数: ', p.get_max_col_no())
+    # print(u'获取默认sheet的最小（起始）行号: ', p.get_min_row_no())
+    # print(u'获取默认sheet的最小（起始）列号: ', p.get_min_col_no())
+    # print(u'获取默认sheet的所有行对象: ', p.get_all_rows())
+    # print(u'获取默认sheet的所有列对象: ', p.get_all_cols())
+    # print(u'从默认sheet中获取某一行，第一行从0开始: ', p.get_single_row(2))
+    # print(u'从默认sheet中获取某一列，第一列从0开始: ', p.get_single_col(3))
+    # print(u'从默认sheet中，通过行号和列号获取指定的单元格(2,2)，注意行号和列号从1开始: ', p.get_cell(2, 2))
+    # print(u'从默认sheet中，通过行号和列号获取指定的单元格(3,3)中的内容，注意行号和列号从1开始: ', p.get_cell_content(3, 3))
+    # print(u'从默认sheet中，通过行号和列号向指定的单元格中(3,8)写入指定的内容，注意行号和列号从1开始: ', p.write_cell_content(3, 8, u'成功'))
+    # print(u'从默认sheet中，通过行号和列号向指定的单元格中(2,7)写入当前日期，注意行号和列号从1开始: ', p.write_cell_current_time(2, 7))
+    # print(u'保存excel文件: ', p.save_excel_file())
+    p.set_sheet_by_name('account')
+    print('************************\ncurrent sheet: ', p.get_default_sheet())
+    print(u'获取有效的行数： ', p.get_valid_rows())
+    print(u'获取有效的列数： ', p.get_valid_cols())
+    data_list = p.get_valid_data()
+    print(u'有效的数据范围： ', data_list)
+    print(data_list[0][u'客户名称'])
