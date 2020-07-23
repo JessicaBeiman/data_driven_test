@@ -7,3 +7,6 @@ page_object/__pycache__/
 project_var/__pycache__/
 tests/__pycache__/
 util/__pycache__/
+*.log
+tests/*.log
+util/*.log

@@ -20,7 +20,7 @@ class Account(object):
 
     def get_account_link(self):
         self.driver.get('https://ap8.lightning.force.com/001/o')
-        time.sleep(10)
+        # time.sleep(10)
 
     def get_new_button(self):
         locate_type, locate_expression = self.account_page_items['account_listview_page.new_button'].split('>')

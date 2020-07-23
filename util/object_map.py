@@ -7,7 +7,7 @@ import time
 # 获取单个元素对象
 def get_element(driver, locate_type, locate_expression):
     try:
-        element = WebDriverWait(driver, 10).until(lambda x: x.find_element(by=locate_type, value=locate_expression))
+        element = WebDriverWait(driver, 60).until(lambda x: x.find_element(by=locate_type, value=locate_expression))
         return element
     except Exception as e:
         raise e
@@ -16,7 +16,7 @@ def get_element(driver, locate_type, locate_expression):
 # 获取多个相同页面元素对象，返回list
 def get_elements(driver, locate_type, locate_expression):
     try:
-        elements = WebDriverWait(driver, 10).until(lambda x: x.find_element(by=locate_type, value=locate_expression))
+        elements = WebDriverWait(driver, 60).until(lambda x: x.find_element(by=locate_type, value=locate_expression))
         return elements
     except Exception as e:
         raise e
