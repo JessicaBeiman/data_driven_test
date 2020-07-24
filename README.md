@@ -18,4 +18,6 @@ What this project does is to login Salesforce and create an account.
 步骤9：封装创建Account操作  
 步骤10：单独封装创建Account的功能  
 步骤11：封装excel操作  
-新建test_data包，将维护测试数据的excel文件放置在该包下；在util包下新建ParseExcel类，封装对excel的操作；在主程序test中调用ParseExcel类读取excel文件中的测试数据并将测试数据传给login和new_account方法的参数。
+新建test_data包，将维护测试数据的excel文件放置在该包下；在util包下新建ParseExcel类，封装对excel的操作；在主程序test中调用ParseExcel类读取excel文件中的测试数据并将测试数据传给login和new_account方法的参数。  
+步骤12：添加日志log模块  
+步骤13：常用时间操作的封装

@@ -14,6 +14,7 @@ from action.new_account import *
 from project_var.var import *
 from util.excel import *
 from util.log import *
+from util.format_time import *
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_experimental_option('useAutomationExtension', False)
@@ -41,7 +42,8 @@ for id, row in enumerate(rows):
                     account_rating_option = acc_row[3].value
                     try:
                         message = new_account(driver, account_name, account_number, account_rating_option)
-                        pe.write_cell_current_time(acc_id + 2, 7)  # 执行时间
+                        # pe.write_cell_current_time(acc_id + 2, 7)  # 执行时间
+                        pe.write_cell_content(acc_id + 2, 7, date_time())
                         if message == acc_row[4].value:
                             pe.write_cell_content(acc_id + 2, 8, 'Pass', font='green')  # 测试结果
                         else:
