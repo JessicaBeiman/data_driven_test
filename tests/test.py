@@ -93,7 +93,7 @@ for id, row in enumerate(rows):
 #                     except Exception as e:
 #                         account_row[u'测试结果'] = 'Fail'
 #                         account_row[u'实际结果'] = str(e)
-#             # 将字典列表account_rows写入'login' sheet
+#             # 将字典列表account_rows写入'account' sheet
 #         except Exception as e:
 #             pe.set_sheet_by_name('login')
 #             login_row[u'测试结果'] = 'Fail'

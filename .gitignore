@@ -10,3 +10,5 @@ util/__pycache__/
 *.log
 tests/*.log
 util/*.log
+~$test_data.xlsx
+test_data/~$test_data.xlsx
